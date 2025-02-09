@@ -4,6 +4,7 @@ const {
 } = require('sequelize');
 
 const bcrypt = require('bcrypt');
+const SALT = require('../config/serverConfig'); 
 
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
@@ -36,10 +37,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   user.beforeCreate(async (user, options) => {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, SALT);
     user.password = hashedPassword;
   })
-  
 
   return user;
 };

@@ -40,8 +40,28 @@ const userController = new userService();
         }
     }
 
+    const isAuthenticated = async (req, res) => {
+        try {
+            const isValid = await userController.isAuthenticated(req.headers['x-access-token']);
+            return res.status(200).json({
+                data: isValid,
+                success: true,
+                message: 'token is valid and user is authenticated',
+                error:{}
+            })
+        } catch (error) {
+            return res.status(500).json({ 
+                data:{},
+                success: false,
+                message: 'Invlaid token',
+                error: error
+            });
+        }
+    }
+
 
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    isAuthenticated
 }
