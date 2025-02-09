@@ -1,5 +1,4 @@
 const  userService  = require("../services/user-service");
-
 const userController = new userService();
 
     const signUp = async (req, res) => {
@@ -59,9 +58,29 @@ const userController = new userService();
         }
     }
 
+    const isAdmin = async (req, res) => {
+        try {
+            const isAdmin = await userController.isAdmin(req.body.id);
+            return res.status(200).json({
+                data: isAdmin,
+                success: true,
+                message: 'successfully checked user is admin',
+                error:{}
+            })
+        } catch (error) {
+            return res.status(500).json({ 
+                data:{},
+                success: false,
+                message: 'failed to check IsAdmin or not',
+                error: error
+            });
+        }
+    }
+
 
 module.exports = {
     signUp,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }

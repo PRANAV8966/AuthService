@@ -9,6 +9,18 @@ function reqValidators(req, res, next) {
   next();
 }
 
+function IsAdiminRequestValidator(req, res, next) {
+  if (!req.body.id) {
+    return res.status(400).json({ 
+        data:{},
+        success:true,
+        message: 'id missing',
+     });
+  }
+  next();
+}
+
 module.exports = {
-    reqValidators
+    reqValidators,
+    IsAdiminRequestValidator
 };

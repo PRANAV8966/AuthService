@@ -2,7 +2,7 @@ const UserRepository   = require("../repositories/user-repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const { jwtKey } = require('../config/serverConfig')
+const { jwtKey } = require('../config/serverConfig');
 
 class userService {
 
@@ -56,7 +56,7 @@ class userService {
                 error:'no user found with the corresponding token';
                 throw error;
             }
-            return user.id;
+            return user;
         } catch (error) {
             console.log("something went wrong in token validation");
             throw error;
@@ -89,6 +89,16 @@ class userService {
             return response;
         } catch (error) {
             console.log('password validation failed');
+            throw error;
+        }
+    }
+
+    async isAdmin(userId) {
+        try {
+            const response = await this.userRepository.isAdmin(userId);
+            return response;
+        } catch (error) {
+            console.log("failed to check if user is admin");
             throw error;
         }
     }
