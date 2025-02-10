@@ -9,11 +9,11 @@ function reqValidators(req, res, next) {
   next();
 }
 
-function IsAdiminRequestValidator(req, res, next) {
+function userRequestValidator(req, res, next) {
   if (!req.body.id) {
     return res.status(400).json({ 
         data:{},
-        success:true,
+        success:false,
         message: 'id missing',
      });
   }
@@ -22,5 +22,5 @@ function IsAdiminRequestValidator(req, res, next) {
 
 module.exports = {
     reqValidators,
-    IsAdiminRequestValidator
+    userRequestValidator
 };

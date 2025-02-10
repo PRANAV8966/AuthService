@@ -1,6 +1,7 @@
 const  userService  = require("../services/user-service");
 const userController = new userService();
 
+
     const signUp = async (req, res) => {
         try {
             const newUser = await userController.signUp(req.body);
@@ -77,10 +78,30 @@ const userController = new userService();
         }
     }
 
+    const isAuthority = async (req, res) => {
+        try {
+            const isAuthorityRole = await userController.isAuthority(req.body.id);
+            return res.status(200).json({
+                data: isAuthorityRole,
+                success: true,
+                message: 'successfully checked user is a part of authority or not',
+                error:{}
+            })
+        } catch (error) {
+            return res.status(500).json({ 
+                data:{},
+                success: false,
+                message: 'failed to check IsAdmin or not',
+                error: error
+            });
+        }
+    }
+
 
 module.exports = {
     signUp,
     signIn,
     isAuthenticated,
-    isAdmin
+    isAdmin,
+    isAuthority
 }

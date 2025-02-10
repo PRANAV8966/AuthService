@@ -102,6 +102,16 @@ class userService {
             throw error;
         }
     }
+
+    async isAuthority(userId) {
+        try {
+            const response = await this.userRepository.isAirlineAuthority(userId);
+            return response;
+        } catch (error) {
+            console.log("failed to check if user is part of Airline authority or not");
+            throw error;
+        }
+    }
 }
 
 module.exports = userService;
