@@ -1,13 +1,19 @@
 const { user, Role } = require('../models/index');
 
+const ValidationErr  = require('../utils/Errors/validation-error');
+
+
 class UserRepository {
+
   async create(data) {
     try {
         const newUser = await user.create(data);
         return newUser;
 
     } catch (error) {
-        console.log("something went wrong in the user repository");
+      if (error.name === 'SequelizeValidationError') {
+        throw new ValidationErr(error);
+      }
         throw error;
     }
   }
@@ -75,6 +81,10 @@ class UserRepository {
           name: 'Airline_authority'
         }
       })
+
+      if (!User) {
+        throw {error:'no user with such id exists'};
+      }
       return User.hasRole(authorityRole);
     } catch (error) {
       console.log("something went wrong in the user repository", error);

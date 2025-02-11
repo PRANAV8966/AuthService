@@ -9,7 +9,7 @@ const { reqValidators, userRequestValidator } = require('../../middlewares/reqVa
 
 
 router.post('/signUp',reqValidators, userController.signUp);
-router.post('/signin',reqValidators, userController.signIn);
+router.post('/signIn',reqValidators, userController.signIn);
 router.get('/isAuthenticated', userController.isAuthenticated);
 router.get('/isAdmin', userRequestValidator, userController.isAdmin);
 router.get('/isAuthority', userRequestValidator, userController.isAuthority);

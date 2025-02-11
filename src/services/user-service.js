@@ -1,5 +1,7 @@
 const UserRepository   = require("../repositories/user-repository"); 
 
+const ClientErr  = require('../utils/Errors/Client-error');
+
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const { jwtKey } = require('../config/serverConfig');
@@ -15,7 +17,9 @@ class userService {
             const newUser = await this.userRepository.create(data);
             return newUser;
         } catch (error) {
-            console.log("something went wrong in the user service");
+            if (error.name === 'SequelizeValidationError') {
+                throw error;
+            }
             throw error;
         }
     }
@@ -24,13 +28,16 @@ class userService {
         try {
             // fetch the user
             const user = await this.userRepository.getUser(email);
+
+            if (!user) {
+                throw new ClientErr();
+            }
            
             //pasword validation
             const passwordMatch = await this.checkPassword(userPlainPassword, user.password);
 
             if(!passwordMatch) {
-                console.log("incorrect password");
-                throw error;
+                throw new ClientErr();
             }
 
             // if(true) -> create and send token
